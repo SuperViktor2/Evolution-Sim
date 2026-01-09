@@ -27,7 +27,9 @@ for child in new_gen:
 	parents = f.find_parents(child)
 	p1_gene = parents[0].gene()
 	p2_gene = parents[1].gene()
-	print(child.gene(), "<-", p1_gene, p2_gene) 
+	print(child.gene(), "<-", p1_gene, p2_gene)
+
+	print("This is a test")
 
 '''
 for i, being in enumerate(new_gen):

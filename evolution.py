@@ -29,7 +29,6 @@ for child in new_gen:
 	p2_gene = parents[1].gene()
 	print(child.gene(), "<-", p1_gene, p2_gene)
 
-print("I am now doing work on a new branch")
 
 
 '''

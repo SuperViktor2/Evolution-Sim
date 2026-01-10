@@ -6,18 +6,18 @@ sys.path.insert(2, '/Users/viktorgoles/Desktop/Evolution')
 
 from Being import Being
 from singleton import used_ids
-from singleton import couples
+#from singleton import couples
 
 
 
 global used_ids
-
+#global couples
 
 def mate(prt1, prt2):
 
 	parent_gen = prt1.generation
 	
-	if ((prt1.sex == "F") & (prt2.sex == "M")) | ((prt1.sex == "M") & (prt2.sex == "F")): #check if different sex
+	if True:#(str(prt1.id)[:6] != str(prt2.id)[:6]): #check if siblings
 
 		while True:
 			p1_tag = str(prt1.id)[:3]
@@ -102,7 +102,7 @@ def generate_pairs(list_of_objects):
 	for pair in pairs:
 		if len(pair) == 2:
 			x+=1
-			couples.append(pair)
+			#couples.append(pair)
 
 	print(f"Generated {x} pairs")
 	return pairs
@@ -110,32 +110,30 @@ def generate_pairs(list_of_objects):
 def new_gen(list_of_pairs):
 	new_gen = []
 	x = 0
-	y = []
 
 	for pair in list_of_pairs:
 		if len(pair) == 2:
 			beta = get_beta_random()
-			y.append(beta)
 			for i in range(0, beta):
 				offspring = mate(pair[0], pair[1])
 				new_gen.append(offspring)
 				x += 1
 	print(f"Generated {x} offsprings")
-	print(y)
 	return new_gen
 
-def find_parents(child):
+def find_parents(child, couples):
 	child_id = str(child.id)
 	parents = []
 
-	for couple in couples:		
-		if (
-			(child_id[:3] == str(couple[0].id)[:3]) or 
-			(child_id[:3] == str(couple[1].id)[:3]) and 
-			(child_id[-1] == str(couple[0].generation - 1))
-		):
-			parents.append(couple[0])
-			parents.append(couple[1])
+	for couple in couples:
+		if len(couple) == 2:
+
+			cond1 = (child_id[:3] == str(couple[0].id)[:3]) or (child_id[:3] == str(couple[1].id)[:3])
+			cond2 = (child_id[3:6] == str(couple[0].id)[:3]) or (child_id[3:6] == str(couple[1].id)[:3])
+			
+			if cond1 and cond2:
+				parents.append(couple[0])
+				parents.append(couple[1])
 	return parents
 #-------------------------------------------------------------------
 def get_beta_random():
@@ -162,5 +160,6 @@ if __name__ == "__main__":
 	for being in new_gen: print(being.gene())
 
 	print("-------")
-	for parent in find_parents(new_gen[0]):
+	print(find_parents(new_gen[0], pairs)) 
+	for parent in find_parents(new_gen[0], pairs):
 		print(parent.gene())

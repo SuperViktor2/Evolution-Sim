@@ -29,8 +29,6 @@ for child in new_gen:
 	p2_gene = parents[1].gene()
 	print(child.gene(), "<-", p1_gene, p2_gene)
 
-	print("This is a test")
-
 '''
 for i, being in enumerate(new_gen):
 	print(being.gene(), "<-", pairs[i][0].gene(), pairs[i][1].gene())

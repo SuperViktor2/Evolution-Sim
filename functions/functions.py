@@ -76,11 +76,51 @@ def first_gen():
 
 def generate_pairs(list_of_objects):
 
-	pairs = []
-	males = []
-	females = []
 	x = 0
+	pairs = []
+	used_indices = set()
 
+    
+    # Loop through each object in the list
+	for i in range(len(list_of_objects)):
+	    # Skip if this object is already part of a pair
+	    if i in used_indices:
+	        continue
+	        
+	    # Look for a partner for object i
+	    for j in range(i + 1, len(list_of_objects)):
+	        # Skip if potential partner is already used
+	        if j in used_indices:
+	            continue
+	        
+	        # Get IDs and sexes
+	        id_i = str(list_of_objects[i].id)
+	        id_j = str(list_of_objects[j].id)
+
+	       	sex_i = list_of_objects[i].sex
+	        sex_j = list_of_objects[j].sex
+
+	        condition1 = sex_i != sex_j
+	        condition2 = id_i[:6] != id_j[:6]
+	        
+	        # The Catch: Check if the first 6 characters are DIFFERENT
+	        if condition1 and condition2:
+	            pairs.append([list_of_objects[i], list_of_objects[j]])
+	            used_indices.add(i)
+	            used_indices.add(j)
+	            x+=1
+	            break  # Found a match for i, move to the next available object
+	        else:
+	        	continue
+	for i in range(len(list_of_objects)):
+		if i not in used_indices:
+			pairs.append([list_of_objects[i]])
+
+	print(f"Generated {x} pairs out of {len(list_of_objects)} individuals.")
+	return pairs
+
+
+'''
 	for obj in list_of_objects:
 		if obj.sex == "M":
 			males.append(obj)
@@ -102,11 +142,10 @@ def generate_pairs(list_of_objects):
 	for pair in pairs:
 		if len(pair) == 2:
 			x+=1
-			#couples.append(pair)
 
 	print(f"Generated {x} pairs")
 	return pairs
-
+'''
 def new_gen(list_of_pairs):
 	new_gen = []
 	x = 0
@@ -147,7 +186,9 @@ def get_beta_random():
 
 if __name__ == "__main__":
 
-	pairs = generate_pairs(first_gen())
+	first_gen = first_gen()
+	print(len(first_gen))
+	pairs = generate_pairs(first_gen)
 
 	for pair in pairs:
 		for individual in pair:

@@ -16,6 +16,7 @@ global used_ids
 print("Creating 1st generation:")
 init_pairs = f.generate_pairs(first_gen)
 current_pairs = []
+marker = True
 
 for pair in init_pairs:
 	for individual in pair:
@@ -27,23 +28,30 @@ user_choice = input("Create next generation? (Press enter for yes or type no)").
 
 while user_choice != "no":
 
+    if (len(current_pairs) == 0) and (marker == False):
+        print("Not enough pairs to make a new generation. Species extinct.")
+        break
+    else:
 
-    parents_to_use = current_pairs if current_pairs else init_pairs
+        parents_to_use = current_pairs if current_pairs else init_pairs
 
-    new_gen = f.new_gen(parents_to_use)
+        new_gen = f.new_gen(parents_to_use)
 
-    for child in new_gen:
-        parents = f.find_parents(child, parents_to_use)
-        if len(parents) == 2:
-            print(f"{child.gene()} <- {parents[0].gene()} {parents[1].gene()}")
 
-    print("---- Making pairs ----")
+        for child in new_gen:
+            parents = f.find_parents(child, parents_to_use)
+            if len(parents) == 2:
+                print(f"{child.gene()} <- {parents[0].gene()} {parents[1].gene()}")
 
-    current_pairs = f.generate_pairs(new_gen)
+        print("---- Making pairs ----")
 
-    for pair in current_pairs:
-        for individual in pair:
-            print(individual.gene(), end=" ")
-        print()
+        current_pairs = f.generate_pairs(new_gen)
 
-    user_choice = input("Create next generation? (Press enter for yes or type no)").lower()
+        for pair in current_pairs:
+            for individual in pair:
+                print(individual.gene(), end=" ")
+            print()
+
+        marker = False
+
+        user_choice = input("Create next generation? (Press enter for yes or type no)").lower()
